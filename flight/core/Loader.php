@@ -6,6 +6,7 @@ namespace flight\core;
 
 use Closure;
 use Exception;
+use Throwable;
 
 /**
  * Responsible for loading objects. It maintains a list of reusable class
@@ -66,38 +67,34 @@ class Loader
     /**
      * Loads a registered class.
      *
-     * @param string $name   Method name
-     * @param bool   $shared Shared instance
-     *
-     * @throws Exception
-     *
+     * @param string $name Method name.
+     * @param bool $shared Shared instance.
      * @return ?object Class instance
+     * @throws Throwable
      */
     public function load(string $name, bool $shared = true): ?object
     {
         $obj = null;
 
-        if (isset($this->classes[$name])) {
-            [0 => $class, 1 => $params, 2 => $callback] = $this->classes[$name];
+        if (!isset($this->classes[$name])) {
+            return null;
+        }
 
-            $exists = isset($this->instances[$name]);
+        [$class, $params, $callback] = $this->classes[$name];
+        $exists = isset($this->instances[$name]);
 
-            if ($shared) {
-                $obj = ($exists) ?
-                    $this->getInstance($name) :
-                    $this->newInstance($class, $params);
+        if ($shared) {
+            $obj = $exists
+                ? $this->getInstance($name)
+                : $this->newInstance($class, $params);
 
-                if (!$exists) {
-                    $this->instances[$name] = $obj;
-                }
-            } else {
-                $obj = $this->newInstance($class, $params);
-            }
+            $this->instances[$name] ??= $obj;
+        } else {
+            $obj = $this->newInstance($class, $params);
+        }
 
-            if ($callback && (!$shared || !$exists)) {
-                $ref = [&$obj];
-                \call_user_func_array($callback, $ref);
-            }
+        if ($callback && (!$shared || !$exists)) {
+            $callback($obj);
         }
 
         return $obj;
