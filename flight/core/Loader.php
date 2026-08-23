@@ -9,9 +9,9 @@ use Exception;
 use Throwable;
 
 /**
- * Responsible for loading objects. It maintains a list of reusable class
- * instances and can generate a new class instances with custom initialization
- * parameters. It also performs class autoloading.
+ * Responsible for instantiating classes. It maintains a list of reusable
+ * instances and can generate new instances with custom constructor arguments.
+ * It also performs automatic class loading.
  *
  * @license MIT, http://flightphp.com/license
  * @copyright Copyright (c) 2011, Mike Cao <mike@mikecao.com>
