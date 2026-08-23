@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace flight\core;
 
-use Closure;
-use Exception;
 use Throwable;
 
 /**
@@ -155,8 +153,8 @@ class Loader
     /**
      * Starts/stops autoloader.
      *
-     * @param bool  $enabled Enable/disable autoloading
-     * @param string|iterable<int, string> $dirs    Autoload directories
+     * @param bool $enabled Enable/disable autoloading.
+     * @param string|string[] $dirs Autoload directories.
      */
     public static function autoload(bool $enabled = true, $dirs = []): void
     {
@@ -196,7 +194,7 @@ class Loader
     /**
      * Adds a directory for autoloading classes.
      *
-     * @param string|iterable<int, string> $dir Directory path
+     * @param string|string[] $dir Directory path.
      */
     public static function addDirectory($dir): void
     {
@@ -204,22 +202,28 @@ class Loader
             foreach ($dir as $value) {
                 self::addDirectory($value);
             }
-        } elseif (is_string($dir)) {
-            $dir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dir);
 
-            if (!in_array($dir, self::$dirs, true)) {
-                self::$dirs[] = $dir;
-            }
+            return;
         }
+
+        if (!is_string($dir)) {
+            return;
+        }
+
+        $dir = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $dir);
+
+        if (in_array($dir, self::$dirs)) {
+            return;
+        }
+
+        self::$dirs[] = $dir;
     }
 
 
     /**
-     * Sets the value for V2 class loading.
+     * Sets whether to allow class loading with underscores in class names.
      *
-     * @param bool $value The value to set for V2 class loading.
-     *
-     * @return void
+     * @param bool $value
      */
     public static function setV2ClassLoading(bool $value): void
     {
