@@ -56,7 +56,7 @@ class Loader
     /**
      * Unregisters a class.
      *
-     * @param string $name Registry name.
+     * @param string $name Class alias.
      */
     public function unregister(string $name): void
     {
