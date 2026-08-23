@@ -113,7 +113,7 @@ class Loader
      *
      * @template T of object = object
      * @param class-string<T>|callable(mixed ...$constructorArguments): T $class Class factory.
-     * @param string[] $params Class constructor arguments.
+     * @param mixed[] $params Class constructor arguments.
      * @return T
      * @throws Throwable
      */
