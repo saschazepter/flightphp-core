@@ -221,9 +221,13 @@ class Loader
 
 
     /**
-     * Sets whether to allow class loading with underscores in class names.
+     * Sets v2 class loading mode.
      *
-     * @param bool $value
+     * When true (default), underscores in class names are converted to directory
+     * separators (e.g. "Foo_Bar" loads "Foo/Bar.php"). Set to false to disable
+     * this conversion and treat underscores as literal characters in the filename.
+     *
+     * @param bool $value True to convert underscores to directory separators (v2 behaviour); false to disable.
      */
     public static function setV2ClassLoading(bool $value): void
     {
