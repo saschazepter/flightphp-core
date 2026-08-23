@@ -17,7 +17,7 @@ use Exception;
  */
 class Loader
 {
-    /** @var array<string, array{class-string|Closure(): object, array<int, mixed>, ?callable}> Registered classes */
+    /** @var array<string, array{class-string<object>|callable(): object, mixed[], ?callable}> Registered classes */
     protected array $classes = [];
 
     /** If this is disabled, classes can load with underscores */
@@ -26,7 +26,7 @@ class Loader
     /** @var array<string, object> Class instances */
     protected array $instances = [];
 
-    /** @var array<int, string> Autoload directories */
+    /** @var string[] Autoload directories */
     protected static array $dirs = [];
 
     /**
