@@ -113,19 +113,16 @@ class Loader
     /**
      * Gets a new instance of a class.
      *
-     * @param class-string<T>|Closure(): class-string<T> $class  Class name or callback function to instantiate class
-     * @param array<int, string>           $params Class initialization parameters
-     *
-     * @template T of object
-     *
-     * @throws Exception
-     *
-     * @return T Class instance
+     * @template T of object = object
+     * @param class-string<T>|callable(mixed ...$constructorArguments): T $class Class factory.
+     * @param string[] $params Class constructor arguments.
+     * @return T
+     * @throws Throwable
      */
-    public function newInstance($class, array $params = [])
+    public function newInstance($class, array $params = []): object
     {
-        if (\is_callable($class)) {
-            return \call_user_func_array($class, $params);
+        if (is_callable($class)) {
+            return $class(...$params);
         }
 
         return new $class(...$params);
