@@ -42,15 +42,14 @@ class Loader
      * Registers a class.
      *
      * @template T of object
-     * @param string $name Registry name.
-     * @param class-string<T>|callable(): T $class Class name or function to instantiate class.
-     * @param mixed[] $params Class initialization parameters.
-     * @param null|callable(T $instance): void $callback Function to call after object instantiation.
+     * @param string $name Class alias.
+     * @param class-string<T>|callable(mixed ...$constructorArguments): T $class Class factory.
+     * @param mixed[] $params Class constructor arguments.
+     * @param ?callable(T $instance): void $callback After instantiation callable.
      */
     public function register(string $name, $class, array $params = [], ?callable $callback = null): void
     {
         unset($this->instances[$name]);
-
         $this->classes[$name] = [$class, $params, $callback];
     }
 
