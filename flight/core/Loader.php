@@ -17,30 +17,16 @@ use Exception;
  */
 class Loader
 {
-    /**
-     * Registered classes.
-     *
-     * @var array<string, array{class-string|Closure(): object, array<int, mixed>, ?callable}> $classes
-     */
+    /** @var array<string, array{class-string|Closure(): object, array<int, mixed>, ?callable}> Registered classes */
     protected array $classes = [];
 
-    /**
-     * If this is disabled, classes can load with underscores
-     */
+    /** If this is disabled, classes can load with underscores */
     protected static bool $v2ClassLoading = true;
 
-    /**
-     * Class instances.
-     *
-     * @var array<string, object>
-     */
+    /** @var array<string, object> Class instances */
     protected array $instances = [];
 
-    /**
-     * Autoload directories.
-     *
-     * @var array<int, string>
-     */
+    /** @var array<int, string> Autoload directories */
     protected static array $dirs = [];
 
     /**
