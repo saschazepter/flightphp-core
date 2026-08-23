@@ -17,7 +17,15 @@ use Exception;
  */
 class Loader
 {
-    /** @var array<string, array{class-string<object>|callable(): object, mixed[], ?callable}> Registered classes */
+    /**
+     * Registered classes.
+     *
+     * @var array<string, array{
+     *   class-string<object>|callable(): object,
+     *   mixed[],
+     *   ?callable(object $instance): void,
+     * }>
+     */
     protected array $classes = [];
 
     /** If this is disabled, classes can load with underscores */
