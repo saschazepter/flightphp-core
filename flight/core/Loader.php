@@ -100,11 +100,10 @@ class Loader
     }
 
     /**
-     * Gets a single instance of a class.
+     * Gets a single instance.
      *
-     * @param string $name Instance name
-     *
-     * @return ?object Class instance
+     * @param string $name Class alias.
+     * @return ?object
      */
     public function getInstance(string $name): ?object
     {
