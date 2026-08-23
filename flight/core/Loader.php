@@ -22,7 +22,7 @@ class Loader
      * Registered classes.
      *
      * @var array<string, array{
-     *   class-string<object>|callable(): object,
+     *   class-string<object>|callable(mixed ...$constructorArguments): object,
      *   mixed[],
      *   ?callable(object $instance): void,
      * }>
