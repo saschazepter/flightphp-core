@@ -129,11 +129,14 @@ class Loader
     }
 
     /**
-     * Gets a registered callable
+     * Gets a registered class factory, constructor arguments and after instantiation callable.
      *
-     * @param string $name Registry name
-     *
-     * @return mixed Class information or null if not registered
+     * @param string $name Class alias.
+     * @return ?array{
+     *   class-string<object>|callable(mixed ...$constructorArguments): object,
+     *   mixed[],
+     *   ?callable(object $instance): void,
+     * }
      */
     public function get(string $name)
     {
