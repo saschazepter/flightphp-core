@@ -64,39 +64,39 @@ class Loader
     }
 
     /**
-     * Loads a registered class.
+     * Gets an instance of a registered class.
      *
-     * @param string $name Method name.
-     * @param bool $shared Shared instance.
-     * @return ?object Class instance
+     * @param string $name Class alias.
+     * @param bool $shared Whether to return a shared instance or create a new one.
+     * @return ?object
      * @throws Throwable
      */
     public function load(string $name, bool $shared = true): ?object
     {
-        $obj = null;
+        $instance = null;
 
         if (!isset($this->classes[$name])) {
             return null;
         }
 
-        [$class, $params, $callback] = $this->classes[$name];
+        [$factory, $constructorArguments, $onAfterInstantiating] = $this->classes[$name];
         $exists = isset($this->instances[$name]);
 
         if ($shared) {
-            $obj = $exists
+            $instance = $exists
                 ? $this->getInstance($name)
-                : $this->newInstance($class, $params);
+                : $this->newInstance($factory, $constructorArguments);
 
-            $this->instances[$name] ??= $obj;
+            $this->instances[$name] ??= $instance;
         } else {
-            $obj = $this->newInstance($class, $params);
+            $instance = $this->newInstance($factory, $constructorArguments);
         }
 
-        if ($callback && (!$shared || !$exists)) {
-            $callback($obj);
+        if ($onAfterInstantiating && (!$shared || !$exists)) {
+            $onAfterInstantiating($instance);
         }
 
-        return $obj;
+        return $instance;
     }
 
     /**
