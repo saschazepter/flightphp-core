@@ -8,10 +8,9 @@ use Closure;
 use Exception;
 
 /**
- * The Loader class is responsible for loading objects. It maintains
- * a list of reusable class instances and can generate a new class
- * instances with custom initialization parameters. It also performs
- * class autoloading.
+ * Responsible for loading objects. It maintains a list of reusable class
+ * instances and can generate a new class instances with custom initialization
+ * parameters. It also performs class autoloading.
  *
  * @license MIT, http://flightphp.com/license
  * @copyright Copyright (c) 2011, Mike Cao <mike@mikecao.com>
