@@ -40,12 +40,11 @@ class Loader
     /**
      * Registers a class.
      *
-     * @param string                                         $name     Registry name
-     * @param class-string<T>|(Closure(): T)                 $class    Class name or function to instantiate class
-     * @param array<int, mixed>                              $params   Class initialization parameters
-     * @param null|(Closure(T $instance): void)              $callback Function to call after object instantiation
-     *
      * @template T of object
+     * @param string $name Registry name.
+     * @param class-string<T>|callable(): T $class Class name or function to instantiate class.
+     * @param mixed[] $params Class initialization parameters.
+     * @param null|callable(T $instance): void $callback Function to call after object instantiation.
      */
     public function register(string $name, $class, array $params = [], ?callable $callback = null): void
     {
@@ -57,7 +56,7 @@ class Loader
     /**
      * Unregisters a class.
      *
-     * @param string $name Registry name
+     * @param string $name Registry name.
      */
     public function unregister(string $name): void
     {
