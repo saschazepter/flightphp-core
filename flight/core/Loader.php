@@ -143,9 +143,7 @@ class Loader
         return $this->classes[$name] ?? null;
     }
 
-    /**
-     * Resets the object to the initial state.
-     */
+    /** Resets the Loader by clearing registered classes and instances */
     public function reset(): void
     {
         $this->classes = [];
