@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace tests;
 
 use Flight;
+use flight\core\Loader;
 use flight\Engine;
 use tests\classes\User;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class AutoloadTest extends TestCase
 {
@@ -17,6 +19,17 @@ class AutoloadTest extends TestCase
     {
         $this->app = new Engine();
         $this->app->path(__DIR__ . '/classes');
+    }
+
+    protected function tearDown(): void
+    {
+        $dirsProperty = (new ReflectionClass(Loader::class))->getProperty('dirs');
+
+        if (PHP_VERSION_ID < 80100) {
+            $dirsProperty->setAccessible(true);
+        }
+
+        $dirsProperty->setValue(null, []);
     }
 
     // Autoload a class
