@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
+use Flight;
 use flight\Engine;
 use tests\classes\User;
 use PHPUnit\Framework\TestCase;
@@ -43,5 +44,18 @@ class AutoloadTest extends TestCase
         }
 
         self::assertNull($test);
+    }
+
+    // Flight::path() must load namespaced classes that Composer PSR-4 does not map
+    public function testPathAutoloadsNamespacedClassOutsideComposerPsr4(): void
+    {
+        $class = \app\middleware\Something::class;
+
+        self::assertFalse(class_exists($class));
+
+        Flight::path(__DIR__ . '/path_autoload_fixtures');
+
+        self::assertTrue(class_exists($class));
+        self::assertTrue(class_exists(Engine::class));
     }
 }
