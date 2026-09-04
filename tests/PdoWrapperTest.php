@@ -68,13 +68,33 @@ class PdoWrapperTest extends TestCase
     public function testFetchField(): void
     {
         $id = $this->pdo_wrapper->fetchField('SELECT id FROM test WHERE name = ?', ['two']);
-        $this->assertEquals(2, $id);
+        $this->assertSame(2, $id);
     }
 
     public function testFetchFieldReturnsFalseWhenNoResults(): void
     {
         $id = $this->pdo_wrapper->fetchField('SELECT id FROM test WHERE id = ?', [999]);
-        $this->assertFalse($id);
+        $this->assertSame(false, $id);
+    }
+
+    public function testFetchFieldReturnsNullWhenColumnIsSqlNull(): void
+    {
+        $this->pdo_wrapper->exec('INSERT INTO test (name) VALUES (NULL)');
+        $value = $this->pdo_wrapper->fetchField('SELECT name FROM test WHERE name IS NULL');
+        $this->assertNull($value);
+    }
+
+    public function testFetchFieldReturnsZero(): void
+    {
+        $value = $this->pdo_wrapper->fetchField('SELECT 0');
+        $this->assertSame(0, $value);
+    }
+
+    public function testFetchFieldReturnsEmptyString(): void
+    {
+        $this->pdo_wrapper->exec('INSERT INTO test (name) VALUES ("")');
+        $value = $this->pdo_wrapper->fetchField('SELECT name FROM test WHERE name = ?', ['']);
+        $this->assertSame('', $value);
     }
 
     public function testFetchRow(): void

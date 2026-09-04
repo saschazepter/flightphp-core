@@ -460,18 +460,38 @@ class SimplePdoTest extends TestCase
     public function testFetchFieldReturnsValue(): void
     {
         $name = $this->db->fetchField('SELECT name FROM users WHERE id = ?', [1]);
-        $this->assertEquals('John', $name);
+        $this->assertSame('John', $name);
     }
 
     public function testFetchFieldReturnsFirstColumn(): void
     {
         $id = $this->db->fetchField('SELECT id, name FROM users WHERE id = ?', [1]);
-        $this->assertEquals(1, $id);
+        $this->assertSame(1, $id);
     }
 
     public function testFetchFieldReturnsFalseWhenNoResults(): void
     {
         $value = $this->db->fetchField('SELECT name FROM users WHERE id = ?', [999]);
-        $this->assertFalse($value);
+        $this->assertSame(false, $value);
+    }
+
+    public function testFetchFieldReturnsNullWhenColumnIsSqlNull(): void
+    {
+        $this->db->exec('INSERT INTO users (name, email) VALUES (NULL, "null@example.com")');
+        $value = $this->db->fetchField('SELECT name FROM users WHERE email = ?', ['null@example.com']);
+        $this->assertNull($value);
+    }
+
+    public function testFetchFieldReturnsZero(): void
+    {
+        $value = $this->db->fetchField('SELECT 0');
+        $this->assertSame(0, $value);
+    }
+
+    public function testFetchFieldReturnsEmptyString(): void
+    {
+        $this->db->exec('INSERT INTO users (name, email) VALUES ("", "empty@example.com")');
+        $value = $this->db->fetchField('SELECT name FROM users WHERE email = ?', ['empty@example.com']);
+        $this->assertSame('', $value);
     }
 }
