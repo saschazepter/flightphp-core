@@ -71,6 +71,12 @@ class PdoWrapperTest extends TestCase
         $this->assertEquals(2, $id);
     }
 
+    public function testFetchFieldReturnsFalseWhenNoResults(): void
+    {
+        $id = $this->pdo_wrapper->fetchField('SELECT id FROM test WHERE id = ?', [999]);
+        $this->assertFalse($id);
+    }
+
     public function testFetchRow(): void
     {
         $row = $this->pdo_wrapper->fetchRow('SELECT * FROM test WHERE name = ?', ['two']);
