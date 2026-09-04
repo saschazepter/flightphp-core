@@ -133,6 +133,17 @@ class ViewTest extends TestCase
         $this->assertEquals('script', $result);
     }
 
+    public function testEEscapesSingleQuote(): void
+    {
+        $expected = htmlentities("'", ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+        $this->expectOutputString($expected);
+        $result = $this->view->e("'");
+
+        $this->assertEquals($expected, $result);
+        $this->assertEquals('&#039;', $result);
+    }
+
     public function testNormalizePath(): void
     {
         $viewMock = new class extends View

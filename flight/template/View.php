@@ -191,7 +191,7 @@ class View
      */
     public function e(string $str): string
     {
-        $value = \htmlentities($str);
+        $value = \htmlentities($str, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         echo $value;
         return $value;
     }
