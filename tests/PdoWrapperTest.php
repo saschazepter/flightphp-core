@@ -68,7 +68,35 @@ class PdoWrapperTest extends TestCase
     public function testFetchField(): void
     {
         $id = $this->pdo_wrapper->fetchField('SELECT id FROM test WHERE name = ?', ['two']);
+        // PDO SQLite may return numeric strings on PHP < 8.1
         $this->assertEquals(2, $id);
+    }
+
+    public function testFetchFieldReturnsFalseWhenNoResults(): void
+    {
+        $id = $this->pdo_wrapper->fetchField('SELECT id FROM test WHERE id = ?', [999]);
+        $this->assertSame(false, $id);
+    }
+
+    public function testFetchFieldReturnsNullWhenColumnIsSqlNull(): void
+    {
+        $this->pdo_wrapper->exec('INSERT INTO test (name) VALUES (NULL)');
+        $value = $this->pdo_wrapper->fetchField('SELECT name FROM test WHERE name IS NULL');
+        $this->assertNull($value);
+    }
+
+    public function testFetchFieldReturnsZero(): void
+    {
+        $value = $this->pdo_wrapper->fetchField('SELECT 0');
+        // PDO SQLite may return '0' on PHP < 8.1
+        $this->assertEquals(0, $value);
+    }
+
+    public function testFetchFieldReturnsEmptyString(): void
+    {
+        $this->pdo_wrapper->exec('INSERT INTO test (name) VALUES ("")');
+        $value = $this->pdo_wrapper->fetchField('SELECT name FROM test WHERE name = ?', ['']);
+        $this->assertSame('', $value);
     }
 
     public function testFetchRow(): void
